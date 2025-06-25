@@ -1,0 +1,13 @@
+prefix=c:/Users/Nils/OneDrive/Dokumente/GitHub/Cifar10-Cifar100/.conda/Library
+exec_prefix=c:/Users/Nils/OneDrive/Dokumente/GitHub/Cifar10-Cifar100/.conda/Library
+libdir=c:/Users/Nils/OneDrive/Dokumente/GitHub/Cifar10-Cifar100/.conda/Library/lib
+sharedlibdir=c:/Users/Nils/OneDrive/Dokumente/GitHub/Cifar10-Cifar100/.conda/Library/lib
+includedir=c:/Users/Nils/OneDrive/Dokumente/GitHub/Cifar10-Cifar100/.conda/Library/include
+
+Name: zlib
+Description: zlib compression library
+Version: 1.2.13
+
+Requires:
+Libs: -L${libdir} -L${sharedlibdir} -lz
+Cflags: -I${includedir}
