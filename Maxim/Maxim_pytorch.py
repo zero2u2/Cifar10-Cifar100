@@ -89,7 +89,7 @@ class ComplexCNN(nn.Module):
 
 MODELS_TO_TEST = {
     '1_SimpleCNN': SimpleCNN,
-    '2_MediumCNN_Dozent': MediumCNN,
+    '2_MediumCNN': MediumCNN,
     '3_ComplexCNN': ComplexCNN
 }
 
