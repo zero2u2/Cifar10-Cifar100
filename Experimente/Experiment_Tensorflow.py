@@ -67,13 +67,13 @@ def SimpleCNN_TF(num_classes=10):
         tf.keras.layers.Flatten(),
         tf.keras.layers.Dense(num_classes)
     ])
-
+"""
 def MediumCNN_TF(num_classes=10):
-    """
+    
     Stufe 2: Ein mittelkomplexes CNN.
     - Zwei separate Conv-Blöcke zur besseren Merkmalsextraktion.
     - Eine kleine Dense-Schicht vor der Ausgabe.
-    """
+    
     return tf.keras.Sequential([
         tf.keras.layers.Input((32, 32, 3)),
         tf.keras.layers.Conv2D(32, 3, padding='same', activation='relu'),
@@ -84,13 +84,14 @@ def MediumCNN_TF(num_classes=10):
         tf.keras.layers.Dense(64, activation='relu'),
         tf.keras.layers.Dense(num_classes)
     ])
-
+"""
+"""
 def ComplexCNN_TF(num_classes=10):
-    """
+    
     Stufe 3: Ein komplexeres, tieferes CNN.
     - Gestapelte Conv-Schichten innerhalb eines Blocks für komplexere Muster.
     - Eine große Dense-Schicht als leistungsfähiger Klassifikator.
-    """
+    
     return tf.keras.Sequential([
         tf.keras.layers.Input((32, 32, 3)),
         tf.keras.layers.Conv2D(32, 3, padding='same', activation='relu'),
@@ -102,16 +103,17 @@ def ComplexCNN_TF(num_classes=10):
         tf.keras.layers.Dense(512, activation='relu'),
         tf.keras.layers.Dense(num_classes)
     ])
-
+"""
+"""
 def UltraComplexCNN_TF(num_classes=10):
-    """
+    
     Stufe 4: Ein sehr tiefes und modernes CNN, inspiriert von gängigen Architekturen.
     - Verwendet die Keras Functional API für mehr Flexibilität.
     - Nutzt Blöcke aus (Conv2D -> BatchNormalization -> Mish-Aktivierung).
     - BatchNormalization stabilisiert das Training und beschleunigt die Konvergenz.
     - Mish ist eine moderne, glatte Aktivierungsfunktion, die oft bessere Ergebnisse als ReLU liefert.
     - Dropout wird zur Regularisierung eingesetzt, um Overfitting zu reduzieren.
-    """
+
     inputs = tf.keras.layers.Input(shape=(32, 32, 3))
     
     # Block 1
@@ -153,14 +155,14 @@ def UltraComplexCNN_TF(num_classes=10):
     outputs = tf.keras.layers.Dense(num_classes, activation='softmax')(x)
     
     return tf.keras.Model(inputs=inputs, outputs=outputs)
-
+"""
 # Dictionary, das die Namen der Modelle auf die zugehörigen Funktionen abbildet.
 # Dies ermöglicht es, einfach durch die zu testenden Modelle zu iterieren.
 MODELS_TO_TEST = {
     '1_SimpleCNN': SimpleCNN_TF,
-    '2_MediumCNN': MediumCNN_TF,
-    '3_ComplexCNN': ComplexCNN_TF,
-    '4_UltraComplexCNN': UltraComplexCNN_TF,
+    #'2_MediumCNN': MediumCNN_TF,
+   # '3_ComplexCNN': ComplexCNN_TF,
+   # '4_UltraComplexCNN': UltraComplexCNN_TF,
 }
 
 # =============================================================================
