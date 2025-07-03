@@ -104,45 +104,47 @@ def ComplexCNN_TF(num_classes=10):
         tf.keras.layers.Dense(num_classes)
     ])
 """
-"""
 def UltraComplexCNN_TF(num_classes=10):
-    
+    """
     Stufe 4: Ein sehr tiefes und modernes CNN, inspiriert von gängigen Architekturen.
     - Verwendet die Keras Functional API für mehr Flexibilität.
     - Nutzt Blöcke aus (Conv2D -> BatchNormalization -> Mish-Aktivierung).
     - BatchNormalization stabilisiert das Training und beschleunigt die Konvergenz.
     - Mish ist eine moderne, glatte Aktivierungsfunktion, die oft bessere Ergebnisse als ReLU liefert.
     - Dropout wird zur Regularisierung eingesetzt, um Overfitting zu reduzieren.
-
+    """
     inputs = tf.keras.layers.Input(shape=(32, 32, 3))
     
+    # FIX: Definiere Mish-Aktivierung manuell für ältere TF-Versionen
+    mish_activation = tf.keras.layers.Activation(lambda x: x * tf.math.tanh(tf.math.softplus(x)))
+
     # Block 1
     x = tf.keras.layers.Conv2D(32, 3, padding='same')(inputs)
     x = tf.keras.layers.BatchNormalization()(x)
-    x = tf.keras.layers.Mish()(x)
+    x = mish_activation(x)
     x = tf.keras.layers.Conv2D(32, 3, padding='same')(x)
     x = tf.keras.layers.BatchNormalization()(x)
-    x = tf.keras.layers.Mish()(x)
+    x = mish_activation(x)
     x = tf.keras.layers.MaxPooling2D()(x)
     x = tf.keras.layers.Dropout(0.2)(x)
     
     # Block 2
     x = tf.keras.layers.Conv2D(64, 3, padding='same')(x)
     x = tf.keras.layers.BatchNormalization()(x)
-    x = tf.keras.layers.Mish()(x)
+    x = mish_activation(x)
     x = tf.keras.layers.Conv2D(64, 3, padding='same')(x)
     x = tf.keras.layers.BatchNormalization()(x)
-    x = tf.keras.layers.Mish()(x)
+    x = mish_activation(x)
     x = tf.keras.layers.MaxPooling2D()(x)
     x = tf.keras.layers.Dropout(0.3)(x)
 
     # Block 3
     x = tf.keras.layers.Conv2D(128, 3, padding='same')(x)
     x = tf.keras.layers.BatchNormalization()(x)
-    x = tf.keras.layers.Mish()(x)
+    x = mish_activation(x)
     x = tf.keras.layers.Conv2D(128, 3, padding='same')(x)
     x = tf.keras.layers.BatchNormalization()(x)
-    x = tf.keras.layers.Mish()(x)
+    x = mish_activation(x)
     x = tf.keras.layers.MaxPooling2D()(x)
     x = tf.keras.layers.Dropout(0.4)(x)
 
@@ -150,12 +152,12 @@ def UltraComplexCNN_TF(num_classes=10):
     x = tf.keras.layers.Flatten()(x)
     x = tf.keras.layers.Dense(1024, kernel_regularizer=tf.keras.regularizers.l1_l2(l1=1e-5, l2=1e-4))(x)
     x = tf.keras.layers.BatchNormalization()(x)
-    x = tf.keras.layers.Mish()(x)
+    x = mish_activation(x)
     x = tf.keras.layers.Dropout(0.5)(x)
     outputs = tf.keras.layers.Dense(num_classes, activation='softmax')(x)
     
     return tf.keras.Model(inputs=inputs, outputs=outputs)
-"""
+
 # Dictionary, das die Namen der Modelle auf die zugehörigen Funktionen abbildet.
 # Dies ermöglicht es, einfach durch die zu testenden Modelle zu iterieren.
 MODELS_TO_TEST = {
