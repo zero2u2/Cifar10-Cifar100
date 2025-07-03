@@ -215,13 +215,16 @@ def get_vram_usage_mb(device):
 # 4. DAS HAUPT-EXPERIMENT
 # =============================================================================
 if __name__ == '__main__':
-    # Geräteerkennung
-    DEVICES_TO_TEST = {'cpu': 'cpu'}
+    # Geräteerkennung: Die Reihenfolge wird hier so festgelegt, dass die GPU zuerst getestet wird.
+    DEVICES_TO_TEST = {}
     if torch.cuda.is_available():
         DEVICES_TO_TEST['cuda'] = 'cuda'
         print(f"CUDA-fähige GPU gefunden: {torch.cuda.get_device_name(0)}")
     else:
         print("Keine CUDA-fähige GPU gefunden. Tests laufen nur auf der CPU.")
+    
+    # CPU wird immer zur Testliste hinzugefügt (nach der GPU).
+    DEVICES_TO_TEST['cpu'] = 'cpu'
 
     print("\nStarte Experimente...")
     results = []
