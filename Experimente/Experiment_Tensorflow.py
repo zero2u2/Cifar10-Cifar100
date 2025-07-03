@@ -234,13 +234,17 @@ def get_vram_usage_mb_tf(device_name):
 # =============================================================================
 if __name__ == '__main__':
     # Geräteerkennung: Prüft, ob GPUs verfügbar sind und fügt sie zur Testliste hinzu.
+    # Die Reihenfolge wird hier so festgelegt, dass die GPU zuerst getestet wird.
     gpus = tf.config.list_physical_devices('GPU')
-    DEVICES_TO_TEST = {'/CPU:0': 'cpu'}
+    DEVICES_TO_TEST = {}
     if gpus:
         DEVICES_TO_TEST['/GPU:0'] = 'cuda'
         print(f"CUDA-fähige GPU gefunden: {gpus[0].name}")
     else:
         print("Keine CUDA-fähige GPU gefunden. Tests laufen nur auf der CPU.")
+    
+    # CPU wird immer zur Testliste hinzugefügt (nach der GPU).
+    DEVICES_TO_TEST['/CPU:0'] = 'cpu'
 
     print("\nStarte Experimente...")
     results = []
