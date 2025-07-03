@@ -268,6 +268,17 @@ if __name__ == '__main__':
                             optimizer = tf.keras.optimizers.SGD(learning_rate=0.01)
                             loss_fn = tf.keras.losses.SparseCategoricalCrossentropy(from_logits=True)
 
+                            # FIX: Initialisiert den Optimierer, indem ein einzelner Trainingsschritt
+                            # auf einem Dummy-Batch ausgeführt wird. Dies erzwingt die Erstellung
+                            # der Zustandsvariablen des Optimierers vor der @tf.function-Schleife.
+                            dummy_x, dummy_y = next(iter(trainloader))
+                            with tf.GradientTape() as tape:
+                                dummy_predictions = model(dummy_x, training=True)
+                                dummy_loss = loss_fn(dummy_y, dummy_predictions)
+                            grads = tape.gradient(dummy_loss, model.trainable_variables)
+                            optimizer.apply_gradients(zip(grads, model.trainable_variables))
+
+
                             # VRAM-Statistik für die GPU zurücksetzen für eine saubere Messung.
                             if 'GPU' in tf_device_name:
                                 tf.config.experimental.reset_memory_stats(tf_device_name.replace('/GPU:', 'GPU:'))
