@@ -67,13 +67,14 @@ def SimpleCNN_TF(num_classes=10):
         tf.keras.layers.Flatten(),
         tf.keras.layers.Dense(num_classes)
     ])
-"""
-def MediumCNN_TF(num_classes=10):
     
+
+def MediumCNN_TF(num_classes=10):
+    """
     Stufe 2: Ein mittelkomplexes CNN.
     - Zwei separate Conv-Blöcke zur besseren Merkmalsextraktion.
     - Eine kleine Dense-Schicht vor der Ausgabe.
-    
+    """
     return tf.keras.Sequential([
         tf.keras.layers.Input((32, 32, 3)),
         tf.keras.layers.Conv2D(32, 3, padding='same', activation='relu'),
@@ -84,14 +85,13 @@ def MediumCNN_TF(num_classes=10):
         tf.keras.layers.Dense(64, activation='relu'),
         tf.keras.layers.Dense(num_classes)
     ])
-"""
-"""
+
 def ComplexCNN_TF(num_classes=10):
-    
+    """
     Stufe 3: Ein komplexeres, tieferes CNN.
     - Gestapelte Conv-Schichten innerhalb eines Blocks für komplexere Muster.
     - Eine große Dense-Schicht als leistungsfähiger Klassifikator.
-    
+    """
     return tf.keras.Sequential([
         tf.keras.layers.Input((32, 32, 3)),
         tf.keras.layers.Conv2D(32, 3, padding='same', activation='relu'),
@@ -103,7 +103,7 @@ def ComplexCNN_TF(num_classes=10):
         tf.keras.layers.Dense(512, activation='relu'),
         tf.keras.layers.Dense(num_classes)
     ])
-"""
+
 def UltraComplexCNN_TF(num_classes=10):
     """
     Stufe 4: Ein sehr tiefes und modernes CNN, inspiriert von gängigen Architekturen.
@@ -162,9 +162,9 @@ def UltraComplexCNN_TF(num_classes=10):
 # Dies ermöglicht es, einfach durch die zu testenden Modelle zu iterieren.
 MODELS_TO_TEST = {
     '1_SimpleCNN': SimpleCNN_TF,
-    #'2_MediumCNN': MediumCNN_TF,
-   # '3_ComplexCNN': ComplexCNN_TF,
-   # '4_UltraComplexCNN': UltraComplexCNN_TF,
+    '2_MediumCNN': MediumCNN_TF,
+    '3_ComplexCNN': ComplexCNN_TF,
+    '4_UltraComplexCNN': UltraComplexCNN_TF,
 }
 
 # =============================================================================
