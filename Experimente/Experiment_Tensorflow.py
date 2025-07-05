@@ -52,14 +52,14 @@ DTYPES_TO_TEST = {
 # =============================================================================
 # 2. MODELLDEFINITIONEN (in TensorFlow/Keras)
 # =============================================================================
-
+"""
 def SimpleCNN_TF(num_classes=10):
-    """
+    
     Stufe 1: Ein sehr einfaches CNN als Baseline.
     - Eine Conv-Schicht zur Merkmalsextraktion.
     - Eine MaxPool-Schicht zur Dimensionsreduktion.
     - Eine Dense-Schicht als Klassifikator.
-    """
+    
     return tf.keras.Sequential([
         tf.keras.layers.Input((32, 32, 3)),
         tf.keras.layers.Conv2D(16, 3, padding='same', activation='relu'),
@@ -70,11 +70,11 @@ def SimpleCNN_TF(num_classes=10):
     
 
 def MediumCNN_TF(num_classes=10):
-    """
+    
     Stufe 2: Ein mittelkomplexes CNN.
     - Zwei separate Conv-Blöcke zur besseren Merkmalsextraktion.
     - Eine kleine Dense-Schicht vor der Ausgabe.
-    """
+    
     return tf.keras.Sequential([
         tf.keras.layers.Input((32, 32, 3)),
         tf.keras.layers.Conv2D(32, 3, padding='same', activation='relu'),
@@ -87,11 +87,11 @@ def MediumCNN_TF(num_classes=10):
     ])
 
 def ComplexCNN_TF(num_classes=10):
-    """
+    
     Stufe 3: Ein komplexeres, tieferes CNN.
     - Gestapelte Conv-Schichten innerhalb eines Blocks für komplexere Muster.
     - Eine große Dense-Schicht als leistungsfähiger Klassifikator.
-    """
+    
     return tf.keras.Sequential([
         tf.keras.layers.Input((32, 32, 3)),
         tf.keras.layers.Conv2D(32, 3, padding='same', activation='relu'),
@@ -103,7 +103,7 @@ def ComplexCNN_TF(num_classes=10):
         tf.keras.layers.Dense(512, activation='relu'),
         tf.keras.layers.Dense(num_classes)
     ])
-
+"""
 def UltraComplexCNN_TF(num_classes=10):
     """
     Stufe 4: Ein sehr tiefes und modernes CNN, inspiriert von gängigen Architekturen.
@@ -161,9 +161,9 @@ def UltraComplexCNN_TF(num_classes=10):
 # Dictionary, das die Namen der Modelle auf die zugehörigen Funktionen abbildet.
 # Dies ermöglicht es, einfach durch die zu testenden Modelle zu iterieren.
 MODELS_TO_TEST = {
-    '1_SimpleCNN': SimpleCNN_TF,
-    '2_MediumCNN': MediumCNN_TF,
-    '3_ComplexCNN': ComplexCNN_TF,
+   # '1_SimpleCNN': SimpleCNN_TF,
+    #'2_MediumCNN': MediumCNN_TF,
+    #'3_ComplexCNN': ComplexCNN_TF,
     '4_UltraComplexCNN': UltraComplexCNN_TF,
 }
 
@@ -248,7 +248,7 @@ if __name__ == '__main__':
         print("Keine CUDA-fähige GPU gefunden. Tests laufen nur auf der CPU.")
     
     # CPU wird immer zur Testliste hinzugefügt (nach der GPU).
-    DEVICES_TO_TEST['/CPU:0'] = 'cpu'
+    #DEVICES_TO_TEST['/CPU:0'] = 'cpu'
 
     print("\nStarte Experimente...")
     results = []
@@ -329,16 +329,16 @@ if __name__ == '__main__':
     # Nach Abschluss aller Tests werden die Ergebnisse in einem DataFrame zusammengefasst und als CSV gespeichert.
     print("\nAlle Experimente abgeschlossen.")
     df_results = pd.DataFrame(results)
-    df_results.to_csv('tensorflow_final_results.csv', index=False)
+    df_results.to_csv('tensorflow_final_resultsvram4.csv', index=False)
     print("\nErgebnistabelle:")
     print(df_results)
-    print("\nErgebnisse in 'tensorflow_final_results.csv' gespeichert.")
+    print("\nErgebnisse in 'tensorflow_final_resultsvram4.csv' gespeichert.")
 
     # =============================================================================
     # 5. ERGEBNISANALYSE UND VISUALISIERUNGS-DASHBOARD
     # =============================================================================
     print("\nErstelle Visualisierungs-Dashboard...")
-
+    """
     # --- Datenvorbereitung für den Speedup-Plot ---
     # Die Daten werden "pivotiert", um CPU- und GPU-Zeiten für dieselbe Konfiguration nebeneinander zu haben.
     df_pivot = df_results.pivot_table(
@@ -348,7 +348,7 @@ if __name__ == '__main__':
         df_pivot['speedup'] = df_pivot['cpu'] / df_pivot['cuda']
     else:
         df_pivot['speedup'] = np.nan # Speedup kann nicht berechnet werden
-
+    
     # --- Dashboard erstellen ---
     sns.set_theme(style="whitegrid", palette="viridis")
     fig, axes = plt.subplots(2, 2, figsize=(20, 15))
@@ -373,7 +373,7 @@ if __name__ == '__main__':
         axes[0, 1].axhline(1, ls='--', color='black') # Linie bei 1x Speedup
         axes[0, 1].set_xlabel('Batch-Größe', fontsize=12)
         axes[0, 1].set_ylabel('Speedup (CPU-Zeit / GPU-Zeit)', fontsize=12)
-
+    
     # --- Plot C: GPU VRAM-Nutzung ---
     # Zeigt den Speicherverbrauch auf der GPU in Abhängigkeit von Batch-Größe, Modell und Datentyp.
     df_gpu = df_results[(df_results['device'] == 'cuda') & (df_results['status'] == 'Success')]
@@ -384,7 +384,7 @@ if __name__ == '__main__':
         ).set_title('C) GPU VRAM-Nutzung', fontsize=16)
     axes[1, 0].set_xlabel('Batch-Größe', fontsize=12)
     axes[1, 0].set_ylabel('Speicher (MB)', fontsize=12)
-
+    
     # --- Plot D: Inferenzzeit ---
     # Vergleicht die Zeit für die Klassifizierung des gesamten Testdatensatzes.
     sns.barplot(
@@ -396,7 +396,8 @@ if __name__ == '__main__':
     
     # Layout anpassen und das Dashboard als Bild speichern.
     plt.tight_layout(rect=[0, 0.03, 1, 0.96])
-    plt.savefig('tensorflow_final_dashboard.png', dpi=150)
+    plt.savefig('tensorflow_final_dashboardvram4.png', dpi=150)
     plt.show()
 
-    print("\nDashboard als 'tensorflow_final_dashboard.png' gespeichert.")
+    print("\nDashboard als 'tensorflow_final_dashboardvram4.png' gespeichert.")
+    """
