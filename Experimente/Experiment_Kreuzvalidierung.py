@@ -7,6 +7,7 @@ import numpy as np
 import seaborn as sns
 from sklearn.model_selection import StratifiedKFold
 import matplotlib.pyplot as plt # Import für die Visualisierung
+import pandas as pd # NEU: Import für CSV-Export
 
 # =============================================================================
 # 1. KONFIGURATION
@@ -158,3 +159,21 @@ if __name__ == '__main__':
     plt.show()
 
     print("\nVisualisierung als 'cross_validation_results.png' gespeichert.")
+
+    # =============================================================================
+    # *** NEU: 6. ERGEBNISSE IN CSV SPEICHERN ***
+    # =============================================================================
+    print("\nSpeichere detaillierte Ergebnisse in CSV-Datei...")
+    
+    # DataFrame aus dem 'history'-Dictionary erstellen
+    results_df = pd.DataFrame(history)
+    
+    # Den Index anpassen, sodass er bei 1 beginnt (für die Epochen)
+    results_df.index = np.arange(1, len(results_df) + 1)
+    results_df.index.name = 'Epoch'
+    
+    # DataFrame in eine CSV-Datei speichern
+    csv_filename = 'cross_validation_history.csv'
+    results_df.to_csv(csv_filename)
+    
+    print(f"Ergebnisse als '{csv_filename}' gespeichert.")
