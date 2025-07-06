@@ -193,13 +193,32 @@ def train_one_epoch(model, loader, optimizer, loss_fn, device):
 
 def measure_inference_time(model, loader, device):
     """Misst die Zeit für die Inferenz über den gesamten Testdatensatz."""
-    model.eval() # Setzt das Modell in den Evaluationsmodus (deaktiviert z.B. Dropout).
-    start_time = time.time()
+    model.eval()
     model_dtype = next(model.parameters()).dtype
-    with torch.no_grad(): # Deaktiviert die Gradientenberechnung, um Speicher und Rechenzeit zu sparen.
+
+    # NEU: Warm-up-Durchlauf, um einmalige GPU-Initialisierungskosten zu absorbieren.
+    # Wir nehmen den ersten Batch aus dem Loader für den Warm-up.
+    try:
+        warmup_data, _ = next(iter(loader))
+        warmup_data = warmup_data.to(device, dtype=model_dtype)
+        with torch.no_grad():
+            # Ein paar Durchläufe, um sicherzugehen, dass alle Kernel kompiliert sind.
+            for _ in range(3):
+                _ = model(warmup_data)
+    except StopIteration:
+        # Falls der Loader leer ist, können wir nichts messen.
+        return 0.0
+
+    # Synchronisieren, um sicherzustellen, dass der Warm-up abgeschlossen ist, bevor der Timer startet.
+    if device.type == 'cuda':
+        torch.cuda.synchronize()
+
+    # Jetzt beginnt die eigentliche, korrekte Messung
+    start_time = time.time()
+    with torch.no_grad():
         for data, _ in loader:
             data = data.to(device, dtype=model_dtype)
-            model(data)
+            _ = model(data)
     if device.type == 'cuda':
         torch.cuda.synchronize()
     end_time = time.time()
