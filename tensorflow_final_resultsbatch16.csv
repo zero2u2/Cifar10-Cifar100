@@ -1,0 +1,6 @@
+model,device,dtype,batch_size,avg_epoch_time_s,inference_time_s,vram_usage_mb,status
+4_UltraComplexCNN,cuda,float32,16,22.309000651041668,0.48299717903137207,805.27685546875,Success
+4_UltraComplexCNN,cuda,float16,16,23.721001466115315,0.4239997863769531,413.6220703125,Success
+4_UltraComplexCNN,cuda,float64,16,78.06266649564107,0.47100090980529785,1565.736572265625,Success
+4_UltraComplexCNN,cpu,float32,16,196.8616669178009,0.43599987030029297,0.0,Success
+4_UltraComplexCNN,cpu,float64,16,439.978333234787,0.4499993324279785,0.0,Success

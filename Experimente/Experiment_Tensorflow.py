@@ -31,7 +31,7 @@ import numpy as np
 
 # Eine Liste von Batch-Größen, die nacheinander getestet werden sollen.
 # Größere Batches können das Training beschleunigen, benötigen aber mehr Speicher.
-BATCH_SIZES_TO_TEST = [32, 64, 128, 256]
+BATCH_SIZES_TO_TEST = [16] #[32, 64, 128, 256]
 
 # Anzahl der Epochen, über die die Trainingszeit gemessen und gemittelt wird.
 # Ein Wert > 1 liefert stabilere Zeitmessungen.
@@ -248,7 +248,7 @@ if __name__ == '__main__':
         print("Keine CUDA-fähige GPU gefunden. Tests laufen nur auf der CPU.")
     
     # CPU wird immer zur Testliste hinzugefügt (nach der GPU).
-    #DEVICES_TO_TEST['/CPU:0'] = 'cpu'
+    DEVICES_TO_TEST['/CPU:0'] = 'cpu'
 
     print("\nStarte Experimente...")
     results = []
@@ -329,10 +329,10 @@ if __name__ == '__main__':
     # Nach Abschluss aller Tests werden die Ergebnisse in einem DataFrame zusammengefasst und als CSV gespeichert.
     print("\nAlle Experimente abgeschlossen.")
     df_results = pd.DataFrame(results)
-    df_results.to_csv('tensorflow_final_resultsvram4.csv', index=False)
+    df_results.to_csv('tensorflow_final_resultsbatch16.csv', index=False)
     print("\nErgebnistabelle:")
     print(df_results)
-    print("\nErgebnisse in 'tensorflow_final_resultsvram4.csv' gespeichert.")
+    print("\nErgebnisse in 'tensorflow_final_resultsbatch16.csv' gespeichert.")
 
     # =============================================================================
     # 5. ERGEBNISANALYSE UND VISUALISIERUNGS-DASHBOARD
